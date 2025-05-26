@@ -1,0 +1,170 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #dbeafe, #f0f4ff);
+  color: #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+h1 {
+  color: #1e3a8a;
+  text-shadow: none;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+form {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 30px 40px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 700px;
+  width: 100%;
+}
+
+.upload-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  margin-bottom: 20px;
+}
+
+.upload-block {
+  flex: 1;
+}
+
+.upload-block label {
+  display: block;
+  font-weight: bold;
+  color: #1e40af;
+  margin-bottom: 6px;
+}
+
+input[type="file"] {
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 14px;
+  padding: 6px;
+  background-color: #eef2ff;
+  border: 1px solid #c7d2fe;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.image-preview-container {  /* ← Добавьте точку в начале */
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.image-preview {
+  border: 3px solid #93c5fd;
+  border-radius: 12px;
+  width: 256px;
+  height: 256px;
+  padding: 5px;
+  background-color: white;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; /* Запрещаем сжатие */
+}
+
+.preview-image {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.inputs {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+.inputs label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #2563eb;
+}
+
+.inputs input[type="number"] {
+  font-size: 16px;
+  padding: 6px;
+  width: 80px;
+  text-align: center;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background-color: #f8fafc;
+}
+
+button {
+  font-size: 18px;
+  padding: 10px 25px;
+  background-color: #e5e7eb;
+  border: none;
+  border-radius: 10px;
+  color: #4b5563;
+  cursor: not-allowed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.loader {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #60a5fa;
+  border-top: 3px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.result-block {
+  background-color: white;
+  padding: 20px 25px;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  margin-top: 40px;
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.result-title {
+  color: #1e40af;
+  margin-bottom: 20px;
+  font-size: 1.6em;
+  font-weight: bold;
+  text-align: left;
+}
+
+.result-image {
+  width: 100%;
+  max-width: 512px; /* Примерно в 3 раза больше, чем 160px */
+  height: auto;
+  border-radius: 12px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

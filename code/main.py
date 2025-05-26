@@ -1,7 +1,7 @@
 import argparse
 
 from style_transfer import get_device, get_vgg19, run_style_transfer
-from image_preparation import get_content_image_size, image_loader, save_image
+from main_image_preparation import get_content_image_size, image_loader, save_image
 
 def main():
 
@@ -23,7 +23,7 @@ def main():
 
     content_img = image_loader(args.content, args.imsize, device)
     style_img = image_loader(args.style, args.imsize, device)
-    input_img = image_loader(args.output, args.imsize, device)
+    input_img = style_img
 
     cnn = get_vgg19()
 

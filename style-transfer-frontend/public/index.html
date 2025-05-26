@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#dbeafe" />
+  <meta name="description" content="Neural Style Transfer App - Upload content and style images to get artistic results" />
+  <title>Neon Style Transfer</title>
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Segoe+UI&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root">
+    <form>
+      <h1>Style Transfer</h1>
+      
+      <div class="upload-section">
+        <div class="upload-block">
+          <label for="content-image">Content Image</label>
+          <input type="file" id="content-image" name="content" />
+        </div>
+        <div class="upload-block">
+          <label for="style-image">Style Image</label>
+          <input type="file" id="style-image" name="style" />
+        </div>
+      </div>
+
+      <div class="image-preview-container">
+        <div class="image-preview">
+          <img src="cat.jpg" alt="Content Preview" class="preview-image" />
+        </div>
+        <div class="image-preview">
+          <img src="style.jpg" alt="Style Preview" class="preview-image" />
+        </div>
+      </div>
+
+      <div class="inputs">
+        <div>
+          <label for="size">Размер (px):</label>
+          <input type="number" id="size" name="size" value="512" />
+        </div>
+        <div>
+          <label for="steps">Шаги обработки:</label>
+          <input type="number" id="steps" name="steps" value="300" />
+        </div>
+      </div>
+
+      <button type="submit" disabled>
+        Обработка...
+        <span class="loader"></span>
+      </button>
+    </form>
+  </div>
+</body>
+</html>

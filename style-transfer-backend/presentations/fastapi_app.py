@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi import UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from services.st_service import StyleTransferService
-import json
+from fastapi.responses import JSONResponse
 
 app = FastAPI(title = "Visual style transfer")
 style_transfer_service = StyleTransferService()
@@ -23,9 +23,15 @@ async def process_image(
         steps: int = Form(300),
         style_weight: float = Form(1e5),
         content_weight: float = Form(1)):
-    print(content)
-    response = await style_transfer_service.transfer_style(content=content, style=style,imsize=imsize,steps=steps,style_weight=style_weight, content_weight=content_weight)
-    response_data = response.body  # Получаем bytes
-    response_dict = json.loads(response_data.decode('utf-8'))
-    print(response_dict) 
-    return response_dict
+
+    response = await style_transfer_service.transfer_style(
+        content=content, 
+        style=style,
+        imsize=imsize,
+        steps=steps,
+        style_weight=style_weight, 
+        content_weight=content_weight
+    )
+
+    return JSONResponse(content=response, status_code=200)
+

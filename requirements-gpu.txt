@@ -1,7 +1,0 @@
-torch==2.6.0+cu124
-torchvision==0.21.0+cu124
-flask==3.0.3
-Pillow==10.3.0
-
-# Источник для загрузки whl-файлов с CUDA
---find-links https://download.pytorch.org/whl/torch_stable.html

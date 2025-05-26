@@ -39,11 +39,12 @@ class StyleTransferService():
                 content_weight=content_weight
             )
 
-            output_filename = f"{uuid.uuid4().hex}.jpg"
-            output_path = os.path.join("static", output_filename)
-            save_image(output, width, height, output_path)
+            # output_filename = f"{uuid.uuid4().hex}.jpg"
+            # output_path = os.path.join("static", output_filename)
+            img_str = save_image(output, width, height)
+            data_url = f"data:image/jpeg;base64,{img_str}"
 
-            return JSONResponse({"output_url": f"/../style-transfer-backend/static/{output_filename}"})
+            return {"output_image": data_url}
 
         except Exception as e:
             return JSONResponse(status_code=500, content={"error": f"Unexpected error: {str(e)}"})
