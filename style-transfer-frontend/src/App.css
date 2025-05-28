@@ -3,18 +3,18 @@ body {
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #dbeafe, #f0f4ff);
   color: #222;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+  min-height: 100vh;
+  padding: 40px;
+  box-sizing: border-box;
 }
 
 h1 {
   color: #1e3a8a;
-  text-shadow: none;
   font-family: 'Orbitron', sans-serif;
-  font-size: 2.5em;
-  margin-bottom: 20px;
+  font-size: 2em; /* Уменьшил с 2.5em */
+  margin-bottom: 20px; /* Уменьшил с 40px */
+  text-align: left; /* Изменил с center */
+  width: 100%;
 }
 
 form {
@@ -22,8 +22,6 @@ form {
   border-radius: 20px;
   padding: 30px 40px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  max-width: 700px;
   width: 100%;
 }
 
@@ -31,7 +29,7 @@ form {
   display: flex;
   justify-content: space-between;
   gap: 40px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .upload-block {
@@ -42,25 +40,26 @@ form {
   display: block;
   font-weight: bold;
   color: #1e40af;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
+  font-size: 1.1em;
 }
 
 input[type="file"] {
   font-family: 'Segoe UI', sans-serif;
   font-size: 14px;
-  padding: 6px;
+  padding: 10px;
   background-color: #eef2ff;
   border: 1px solid #c7d2fe;
   border-radius: 8px;
   width: 100%;
+  margin-bottom: 20px;
 }
 
-.image-preview-container {  /* ← Добавьте точку в начале */
+.image-preview-container {
   display: flex;
   justify-content: space-between;
   gap: 40px;
-  margin: 20px 0;
-  width: 100%;
+  margin: 30px 0;
 }
 
 .image-preview {
@@ -75,7 +74,6 @@ input[type="file"] {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0; /* Запрещаем сжатие */
 }
 
 .preview-image {
@@ -84,28 +82,29 @@ input[type="file"] {
   width: auto;
   height: auto;
   object-fit: contain;
-  display: block;
 }
 
-.inputs {
+.params-row {
   display: flex;
-  justify-content: center;
   gap: 30px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
-.inputs label {
+.param-group {
+  flex: 1;
+}
+
+.param-group label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   font-weight: bold;
   color: #2563eb;
 }
 
-.inputs input[type="number"] {
+.param-group input[type="number"] {
   font-size: 16px;
-  padding: 6px;
-  width: 80px;
-  text-align: center;
+  padding: 8px 12px;
+  width: 100%;
   border: 1px solid #cbd5e1;
   border-radius: 6px;
   background-color: #f8fafc;
@@ -113,38 +112,48 @@ input[type="file"] {
 
 button {
   font-size: 18px;
-  padding: 10px 25px;
-  background-color: #e5e7eb;
+  padding: 12px 30px;
+  background-color: #2563eb;
+  color: white;
   border: none;
   border-radius: 10px;
-  color: #4b5563;
-  cursor: not-allowed;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
+  width: 100%;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #1d4ed8;
+}
+
+button:disabled {
+  background-color: #a5b4fc;
+  cursor: wait;
 }
 
 .loader {
   width: 18px;
   height: 18px;
-  border: 3px solid #60a5fa;
-  border-top: 3px solid transparent;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid white;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
 
-.result-block {
-  background-color: white;
-  padding: 20px 25px;
+.result-panel {
+  background-color: rgba(255, 255, 255, 0.95);
   border-radius: 20px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  margin-top: 40px;
-  text-align: center;
-  max-width: 600px;
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
+  padding: 30px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  box-sizing: border-box;
+  border: 3px solid #93c5fd;
+  display: flex;
+  flex-direction: column;
 }
 
 .result-title {
@@ -152,17 +161,125 @@ button {
   margin-bottom: 20px;
   font-size: 1.6em;
   font-weight: bold;
-  text-align: left;
+}
+
+.result-placeholder {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  font-size: 1.2em;
+}
+
+.result-image-container {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .result-image {
-  width: 100%;
-  max-width: 512px; /* Примерно в 3 раза больше, чем 160px */
-  height: auto;
+  max-width: 100%;
+  max-height: 512px;
   border-radius: 12px;
   object-fit: contain;
-  display: block;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.result-image:hover {
+  transform: scale(1.02);
+}
+
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  color: #1e40af;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.error-message {
+  color: #dc2626;
+  margin-top: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.app-wrapper {
+  max-width: 1400px;
   margin: 0 auto;
+  padding: 20px;
+}
+
+/* Увеличить изображение результата (если нужно) */
+.result-image {
+  max-width: 100%;
+  max-height: 600px; /* Было 512px */
+}
+
+.main-content {
+  display: flex;
+  gap: 30px;
+  width: 100%;
+}
+
+.form-column {
+  flex: 0 1 65%;
+  min-width: 0;
+}
+
+.result-column {
+  flex: 0 0 30%;
+  position: relative;
+}
+
+.app-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 30px;
+  align-items: start;
+}
+
+.form-section {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.result-section {
+  position: sticky;
+  top: 20px;
+}
+
+.result-panel {
+  width: 100%;
+  height: auto;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border: 3px solid #93c5fd;
 }
 
 @keyframes spin {
