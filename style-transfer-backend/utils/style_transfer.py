@@ -6,18 +6,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-
-from torchvision.models import vgg19, VGG19_Weights
-
-#--------------------------------------------------------------------------------------------------------------------#
-# Device                                                     
-#--------------------------------------------------------------------------------------------------------------------#
-
-def get_device():
-
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    torch.set_default_device(device)
-    return device
+from typing import List
 
 #--------------------------------------------------------------------------------------------------------------------#
 # Loss Functions                                                     
@@ -79,26 +68,20 @@ class Normalization(nn.Module):
 # Style Model                                                       
 #--------------------------------------------------------------------------------------------------------------------#
 
-def get_vgg19(): 
-
-    return vgg19(weights=VGG19_Weights.DEFAULT).features.eval()
-
 def get_input_optimizer(input_img):
 
     # this line shows that input is a parameter that requires a gradient
     optimizer = optim.LBFGS([input_img])
     return optimizer
 
-def get_style_model_and_losses(cnn, normalization_mean, normalization_std,
-                               style_img, content_img,
-                               content_layers=None,
-                               style_layers=None):
+def get_style_model_and_losses(cnn: nn.Sequential, 
+                               normalization_mean: torch.Tensor, 
+                               normalization_std: torch.Tensor,
+                               style_img: torch.Tensor, 
+                               content_img: torch.Tensor,
+                               content_layers: List[str],
+                               style_layers: List[str]):
     
-    if content_layers is None:
-        content_layers = ['conv_4'] # content_layers_default = ['conv_4']
-    if style_layers is None:
-        style_layers = ['conv_1', 'conv_2', 'conv_3', 'conv_4', 'conv_5'] # style_layers_default = ['conv_1', 'conv_2', 'conv_3', 'conv_4', 'conv_5']
-        
     # normalization module
     normalization = Normalization(normalization_mean, normalization_std)
 
@@ -156,26 +139,33 @@ def get_style_model_and_losses(cnn, normalization_mean, normalization_std,
 # RUN                                                      
 #--------------------------------------------------------------------------------------------------------------------#
 
-def run_style_transfer(cnn, content_img, style_img, input_img = None,
-                       normalization_mean = None, normalization_std = None, 
-                       num_steps=500, style_weight=1e5, content_weight=1e0):
+def run_style_transfer(cnn: nn.Sequential, 
+                       content_img: torch.Tensor, 
+                       style_img: torch.Tensor, 
+                       input_img: torch.Tensor,
+                       normalization_mean: torch.Tensor, 
+                       normalization_std: torch.Tensor, 
+                       num_steps: int, 
+                       style_weight: float, 
+                       content_weight: float,
+                       content_layers: List[str], 
+                       style_layers: List[str]
+                       ):
     
     print('Building the style transfer model..')
+    print(f"num_steps: {num_steps}, style_weight: {style_weight}, content_weight: {content_weight}, content_layer: {content_layers}, style_layers: {style_layers}")
 
-    if normalization_mean is None:
-        normalization_mean = torch.tensor([0.485, 0.456, 0.406]) # cnn_normalization_mean = torch.tensor([0.485, 0.456, 0.406])
-    if normalization_std is None:
-        normalization_std = torch.tensor([0.229, 0.224, 0.225]) # cnn_normalization_std = torch.tensor([0.229, 0.224, 0.225])
-    if input_img is None:
-        input_img = content_img.clone()
-
-    model, style_losses, content_losses = get_style_model_and_losses(cnn, normalization_mean, normalization_std, style_img, content_img)
-
-    # We want to optimize the input and not the model parameters so we
-    # update all the requires_grad fields accordingly
+    model, style_losses, content_losses = get_style_model_and_losses(cnn, 
+                                                                     normalization_mean, 
+                                                                     normalization_std, 
+                                                                     style_img, 
+                                                                     content_img,
+                                                                     content_layers=content_layers,
+                                                                     style_layers=style_layers
+                                                                     )
+    
     input_img.requires_grad_(True)
-    # We also put the model in evaluation mode, so that specific layers
-    # such as dropout or batch normalization layers behave correctly.
+
     model.eval()
     model.requires_grad_(False)
 
@@ -186,7 +176,7 @@ def run_style_transfer(cnn, content_img, style_img, input_img = None,
     while run[0] <= num_steps:
 
         def closure():
-            # correct the values of updated input image
+
             with torch.no_grad():
                 input_img.clamp_(0, 1)
 
