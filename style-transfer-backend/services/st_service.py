@@ -1,10 +1,10 @@
 from fastapi.responses import JSONResponse
 from PIL import UnidentifiedImageError
 
-from utils.image_preparation import get_content_image_size, image_loader, save_image
 from utils.st_strategies import get_strategy
 from utils.st_config import TransferConfigBuilder
 from utils.st_facade import StyleTransferFacade
+from utils.st_image_processor import ImageProcessor 
 
 
 class StyleTransferService():
@@ -21,11 +21,6 @@ class StyleTransferService():
             content_bytes = await content_file.read()
             style_bytes = await style_file.read()
 
-            try:
-                width, height = get_content_image_size(content_bytes)
-            except UnidentifiedImageError:
-                return JSONResponse(status_code=400, content={"error": "Uploaded files must be valid images."})
-            
             strategy = get_strategy(model_type)
             config = (TransferConfigBuilder()
                       .with_steps(steps)
@@ -35,9 +30,12 @@ class StyleTransferService():
                       .with_strategy(strategy)
                       .build())
             
+            processor = ImageProcessor(imsize=imsize, device=config.device)
+            
             try:
-                content_img = image_loader(content_bytes, imsize, config.device)
-                style_img = image_loader(style_bytes, imsize, config.device)
+                width, height = processor.get_size(content_bytes)
+                content_img = processor.load(content_bytes)
+                style_img = processor.load(style_bytes)
             except UnidentifiedImageError:
                 return JSONResponse(status_code=400, content={"error": "Uploaded files must be valid images."})
             
@@ -47,7 +45,7 @@ class StyleTransferService():
                 style_img=style_img
                 )
 
-            img_str = save_image(output_img, width, height)
+            img_str = processor.unload(output_img, width, height)
             data_url = f"data:image/jpeg;base64,{img_str}"
 
             return {"output_image": data_url}

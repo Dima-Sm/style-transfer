@@ -1,6 +1,6 @@
 import torch
 from utils.style_transfer import run_style_transfer
-from st_config import TransferConfig
+from utils.st_config import TransferConfig
 
 class StyleTransferFacade:
     def __init__(self, config: TransferConfig):

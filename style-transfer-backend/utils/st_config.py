@@ -1,7 +1,7 @@
 import torch
 from typing import Optional
 from dataclasses import dataclass, field
-from st_strategies import StyleModelStrategy, VGG19Strategy, VGG16Strategy 
+from utils.st_strategies import StyleModelStrategy, VGG19Strategy 
 
 @dataclass
 class TransferConfig:
