@@ -12,18 +12,18 @@
 .
 ├── style-transfer-backend
 │   ├── presentations
-│   │   ├── fastapi_app.py
-│   │   └── requirements.txt
+│   │   └── fastapi_app.py
+│   │   
 │   ├── services
-│   │   ├── st_service.py
-│   │   └── requirements.txt
+│   │   └── st_service.py
+│   │    
 │   ├── utils
-│   │   ├── image_preparation.py
-│   │   ├── style_transfer.py
-│   │   └── requirements.txt
-│   ├── main.py
-│   ├── requirements.txt
-│   └── .gitignore
+│   │   ├── st_strategies.py
+│   │   ├── st_config.py
+│   │   ├── st_facade.py
+│   │   ├── st_image_processor.py
+│   │   └── style_transfer.py
+│   └── main.py
 │
 ├── style-transfer-frontend
 │   ├── public
@@ -34,10 +34,10 @@
 │   │   └── index.js
 │   ├── package.json
 │   ├── package-lock.json
-│   ├── requirements.txt
 │   └── .gitignore
 │
 ├── README.md
+├── LICENSE.md
 └── .gitignore
 ```
 
