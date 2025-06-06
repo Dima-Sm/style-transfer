@@ -4,7 +4,7 @@ from PIL import UnidentifiedImageError
 from utils.st_config import TransferConfigBuilder
 from utils.st_facade import StyleTransferFacade
 from utils.st_image_processor import ImageProcessor 
-from utils.st_logger import setup_logger
+from logger.st_logger import setup_logger
 
 
 class StyleTransferService():
