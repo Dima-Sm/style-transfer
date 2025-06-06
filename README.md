@@ -22,7 +22,7 @@
 │   │   ├── st_config.py
 │   │   ├── st_facade.py
 │   │   ├── st_image_processor.py
-│   │   └── style_transfer.py
+│   │   ├── style_transfer.py
 │   │   └── st_service.py
 │   │    
 │   ├── logger
