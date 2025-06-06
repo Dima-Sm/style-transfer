@@ -100,19 +100,16 @@ npm start
 ## ⚙️ Технологии
 ### Backend
 
-FastAPI
-
-PyTorch (VGG19/VGG16)
-
-Pillow
-
-Chain of Responsibility, Strategy, Builder, Facade (паттерны)
+- **FastAPI** 
+- **PyTorch** 
+- **Torchvision** 
+- **Pillow** 
+- **python-multipart** 
+- Паттерны проектирования: **Strategy**, **Builder**, **Facade**, **Chain of Responsibility**
 
 ### Frontend
-
-React + HTML/CSS
-
-Загрузка изображений и отображение результата через DataURL
+- **React + HTML/css** 
+- Отправка изображений через `multipart/form-data`, отображение результата через Base64
 
 ## 🖼️ Интерфейс
 
