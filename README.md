@@ -23,15 +23,22 @@
 │   │   ├── st_facade.py
 │   │   ├── st_image_processor.py
 │   │   └── style_transfer.py
+│   │   └── st_service.py
+│   │    
+│   ├── logger
+│   │   └── st_logger.py
+│   │    
 │   └── main.py
 │
 ├── style-transfer-frontend
 │   ├── public
 │   │   └── index.html
+│   │    
 │   ├── src
 │   │   ├── App.js
 │   │   ├── App.css
 │   │   └── index.js
+│   │    
 │   ├── package.json
 │   ├── package-lock.json
 │   └── .gitignore
