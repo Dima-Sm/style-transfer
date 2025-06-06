@@ -11,6 +11,8 @@
 ```
 .
 ├── style-transfer-backend
+│   ├── main.py
+│   │    
 │   ├── presentations
 │   │   └── fastapi_app.py
 │   │   
@@ -22,16 +24,23 @@
 │   │   ├── st_config.py
 │   │   ├── st_facade.py
 │   │   ├── st_image_processor.py
-│   │   └── style_transfer.py
-│   └── main.py
+│   │   ├── style_transfer.py
+│   │   └── st_service.py
+│   │    
+│   ├── logger
+│   │   └── st_logger.py
+│   │    
+│   └── requirements.txt
 │
 ├── style-transfer-frontend
 │   ├── public
 │   │   └── index.html
+│   │    
 │   ├── src
 │   │   ├── App.js
 │   │   ├── App.css
 │   │   └── index.js
+│   │    
 │   ├── package.json
 │   ├── package-lock.json
 │   └── .gitignore
@@ -41,7 +50,7 @@
 └── .gitignore
 ```
 
-## ⚙️ Установка и запуск
+## 📦 Установка и запуск
 
 ### Backend
 
@@ -90,51 +99,23 @@ npm install
 npm start
 ```
 
-## 📌 requirements.txt
+## ⚙️ Технологии
+### Backend
 
-**Общий для backend:**
+- **FastAPI** 
+- **PyTorch** 
+- **Torchvision** 
+- **Pillow** 
+- **python-multipart** 
+- Паттерны проектирования: **Strategy**, **Builder**, **Facade**, **Chain of Responsibility**
 
-```
-fastapi
-uvicorn
-torch
-torchvision
-Pillow
-python-multipart
-```
-
-**presentations/requirements.txt:**
-
-```
-fastapi
-```
-
-**services/requirements.txt:**
-
-```
-torch
-```
-
-**utils/requirements.txt:**
-
-```
-torchvision
-Pillow
-```
-
-**style-transfer-frontend/requirements.txt (для справки):**
-
-```
-react
-react-dom
-react-scripts
-```
-
-Используется Node.js и npm — основные зависимости описаны в `package.json`.
+### Frontend
+- **React + HTML/css** 
+- Отправка изображений через `multipart/form-data`, отображение результата через Base64
 
 ## 🖼️ Интерфейс
 
-Здесь можно разместить скриншот работы веб-приложения.
+Здесь должен быть скриншот работы веб-приложения.
 
 ## 📄 Лицензия
 
