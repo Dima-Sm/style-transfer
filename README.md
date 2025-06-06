@@ -48,7 +48,7 @@
 └── .gitignore
 ```
 
-## ⚙️ Установка и запуск
+## 📦 Установка и запуск
 
 ### Backend
 
@@ -97,51 +97,26 @@ npm install
 npm start
 ```
 
-## 📌 requirements.txt
+## ⚙️ Технологии
+### Backend
 
-**Общий для backend:**
+FastAPI
 
-```
-fastapi
-uvicorn
-torch
-torchvision
+PyTorch (VGG19/VGG16)
+
 Pillow
-python-multipart
-```
 
-**presentations/requirements.txt:**
+Chain of Responsibility, Strategy, Builder, Facade (паттерны)
 
-```
-fastapi
-```
+### Frontend
 
-**services/requirements.txt:**
+React + HTML/CSS
 
-```
-torch
-```
-
-**utils/requirements.txt:**
-
-```
-torchvision
-Pillow
-```
-
-**style-transfer-frontend/requirements.txt (для справки):**
-
-```
-react
-react-dom
-react-scripts
-```
-
-Используется Node.js и npm — основные зависимости описаны в `package.json`.
+Загрузка изображений и отображение результата через DataURL
 
 ## 🖼️ Интерфейс
 
-Здесь можно разместить скриншот работы веб-приложения.
+Здесь должен быть скриншот работы веб-приложения.
 
 ## 📄 Лицензия
 
