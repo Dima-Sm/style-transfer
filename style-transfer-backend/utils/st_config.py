@@ -1,7 +1,7 @@
 import torch
 from typing import Optional
 from dataclasses import dataclass, field
-from utils.st_strategies import StyleModelStrategy, VGG19Strategy 
+from utils.st_strategies import StyleModelStrategy, VGG19Strategy, get_strategy
 
 @dataclass
 class TransferConfig:
@@ -46,8 +46,9 @@ class TransferConfigBuilder:
             self.config.content_weight = weight
         return self
 
-    def with_strategy(self, strategy: StyleModelStrategy) -> 'TransferConfigBuilder':
-        self.config.strategy = strategy
+    def with_strategy(self, model_type: str) -> 'TransferConfigBuilder':
+        if model_type is not None:
+            self.config.strategy = get_strategy(model_type)
         return self
 
     def with_device(self, device: torch.device) -> 'TransferConfigBuilder':

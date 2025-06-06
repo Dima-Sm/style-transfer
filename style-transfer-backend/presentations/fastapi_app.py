@@ -22,7 +22,7 @@ async def process_image(
         steps: int = Form(...),
         style_weight: float = Form(...),
         content_weight: float = Form(...),
-        model_type: str = Form("vgg19")):
+        model_type: str = Form(None)):
 
     response = await style_transfer_service.transfer_style(
         content_file=content, 
@@ -33,6 +33,6 @@ async def process_image(
         content_weight=content_weight,
         model_type=model_type
     )
-
+    
     return JSONResponse(content=response, status_code=200)
 

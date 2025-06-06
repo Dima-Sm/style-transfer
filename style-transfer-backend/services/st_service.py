@@ -1,15 +1,16 @@
 from fastapi.responses import JSONResponse
 from PIL import UnidentifiedImageError
 
-from utils.st_strategies import get_strategy
 from utils.st_config import TransferConfigBuilder
 from utils.st_facade import StyleTransferFacade
 from utils.st_image_processor import ImageProcessor 
+from utils.st_logger import setup_logger
 
 
 class StyleTransferService():
     def __init__(self):
         self.allowed_types = ["image/jpeg", "image/png"]
+        self.logger = setup_logger(__name__)
 
     async def transfer_style(self, content_file, style_file, imsize, steps, style_weight, content_weight, model_type):
         try:
@@ -21,13 +22,12 @@ class StyleTransferService():
             content_bytes = await content_file.read()
             style_bytes = await style_file.read()
 
-            strategy = get_strategy(model_type)
             config = (TransferConfigBuilder()
                       .with_steps(steps)
                       .with_imsize(imsize)
                       .with_style_weight(style_weight)
                       .with_content_weight(content_weight)
-                      .with_strategy(strategy)
+                      .with_strategy(model_type)
                       .build())
             
             processor = ImageProcessor(imsize=imsize, device=config.device)
@@ -50,5 +50,9 @@ class StyleTransferService():
 
             return {"output_image": data_url}
 
+        except (RuntimeError, ValueError, AttributeError) as e:
+            self.logger.error(f"Error during style transfer: {e}")
+            return JSONResponse(status_code=500, content={"error": f"Internal error: {str(e)}"})
         except Exception as e:
-            return JSONResponse(status_code=500, content={"error": f"Unexpected error: {str(e)}"})
+            self.logger.critical(f"Unexpected error: {e}", exc_info=True)
+            return JSONResponse(status_code=500, content={"error": "Internal server error"})
