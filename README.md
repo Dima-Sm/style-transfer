@@ -11,6 +11,8 @@
 ```
 .
 ├── style-transfer-backend
+│   ├── main.py
+│   │    
 │   ├── presentations
 │   │   └── fastapi_app.py
 │   │   
@@ -28,7 +30,7 @@
 │   ├── logger
 │   │   └── st_logger.py
 │   │    
-│   └── main.py
+│   └── requirements.txt
 │
 ├── style-transfer-frontend
 │   ├── public
