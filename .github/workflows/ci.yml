@@ -2,54 +2,62 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: ['master']
+    branches: [ "master" ]
   pull_request:
-    branches: ['master']
+    branches: [ "master" ]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
 
-      - name: Build Backend
-        run: docker build -f Dockerfile.backend -t style-transfer-backend .
+    - name: Build Backend
+      run: docker build -f Dockerfile.backend -t style-transfer-backend .
 
-      - name: Build Frontend
-        run: docker build -f Dockerfile.frontend -t style-transfer-frontend .
+    - name: Build Frontend  
+      run: docker build -f Dockerfile.frontend -t style-transfer-frontend .
 
-      - name: Install curl for testing
-        run: sudo apt-get update && sudo apt-get install -y curl
+    - name: Install curl for testing
+      run: sudo apt-get update && sudo apt-get install -y curl
 
-      - name: Run services in background
-        run: |
-          docker run -d --name backend -p 8000:8000 style-transfer-backend
-          docker run -d --name frontend -p 80:80 style-transfer-frontend
+    - name: Run services in background
+      run: |
+        docker run -d --name backend -p 8000:8000 style-transfer-backend
+        docker run -d --name frontend -p 80:80 style-transfer-frontend
 
-      - name: Wait for services to be ready
-  run: |
-    echo "Waiting for backend (http://localhost:8000/docs)..."
-    for i in {1..30}; do
-      if curl -f http://localhost:8000/docs > /dev/null 2>&1; then
-        echo "✅ Backend is ready!"
-        break
-      fi
-      sleep 2
-    done
-
-    echo "Waiting for frontend (http://localhost)..."
-    for i in {1..30}; do
-      if curl -f http://localhost > /dev/null 2>&1; then
-        echo "✅ Frontend is ready!"
-        break
-      fi
-      sleep 2
-    done
+    - name: Wait for services to be ready
+      run: |
+        echo "Waiting for backend (http://localhost:8000/docs)..."
+        for i in {1..60}; do
+          if curl -f http://localhost:8000/docs > /dev/null 2>&1; then
+            echo "✅ Backend is ready!"
+            break
+          fi
+          if [ $i -eq 60 ]; then
+            echo "❌ Backend failed to start"
+            exit 1
+          fi
+          sleep 1
+        done
+        
+        echo "Waiting for frontend (http://localhost)..."
+        for i in {1..60}; do
+          if curl -f http://localhost > /dev/null 2>&1; then
+            echo "✅ Frontend is ready!"
+            break
+          fi
+          if [ $i -eq 60 ]; then
+            echo "❌ Frontend failed to start"
+            exit 1
+          fi
+          sleep 1
+        done
 
     - name: Test API endpoint
       run: |
@@ -70,8 +78,8 @@ jobs:
     - name: Clean up containers
       if: always()
       run: |
-        docker stop backend frontend
-        docker rm backend frontend
+        docker stop backend frontend 2>/dev/null || true
+        docker rm backend frontend 2>/dev/null || true
 
   deploy:
     runs-on: ubuntu-latest
@@ -79,8 +87,8 @@ jobs:
     if: github.ref == 'refs/heads/master'
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Build and push to Docker Hub (заглушка)
-        run: echo "Deploy step completed (simulated for lab)"
+    - name: Build and push to Docker Hub (заглушка)
+      run: echo "Deploy step completed (simulated for lab)"
