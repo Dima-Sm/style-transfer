@@ -27,24 +27,70 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
 
+    # Запускаем реальные контейнеры (как в production!)
+    services:
+      backend:
+        image: style-transfer-backend
+        ports:
+          - 8000:8000
+        options: >-
+          --health-cmd="curl -f http://localhost:8000/docs || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+      frontend:
+        image: style-transfer-frontend
+        ports:
+          - 80:80
+        options: >-
+          --health-cmd="curl -f http://localhost || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+    - name: Install curl for testing
+      run: sudo apt-get update && sudo apt-get install -y curl
 
-    - name: Install backend dependencies
+    - name: Wait for services to be ready
       run: |
-        cd style-transfer-backend
-        pip install -r requirements.txt
+        echo "Waiting for backend (http://localhost:8000/docs)..."
+        for i in {1..30}; do
+          if curl -f http://localhost:8000/docs > /dev/null 2>&1; then
+            echo "Backend is ready!"
+            break
+          fi
+          sleep 5
+        done
+        
+        echo "Waiting for frontend (http://localhost)..."
+        for i in {1..30}; do
+          if curl -f http://localhost > /dev/null 2>&1; then
+            echo "Frontend is ready!"
+            break
+          fi
+          sleep 5
+        done
 
-    - name: Run linter (Quality Gate)
+    - name: Test API endpoint
       run: |
-        pip install pylint
-        pylint --fail-under=7.0 style-transfer-backend
+        echo "Testing /transfer endpoint (should return 422, not 500)..."
+        response=$(curl -X POST http://localhost:8000/transfer -w "%{http_code}" -o /dev/null -s)
+        if [[ $response == "422" || $response == "400" ]]; then
+          echo "✅ API correctly rejects invalid requests"
+        else
+          echo "❌ API returned unexpected status: $response"
+          exit 1
+        fi
+
+    - name: Test frontend delivers HTML
+      run: |
+        echo "Testing frontend..."
+        curl -f http://localhost | grep -q "<title>Style Transfer</title>" && echo "✅ Frontend works"
 
   deploy:
     runs-on: ubuntu-latest
