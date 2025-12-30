@@ -1,0 +1,22 @@
+# Игнорируем всё, КРОМЕ явно разрешённого
+**
+!style-transfer-backend/
+!style-transfer-backend/**
+!style-transfer-frontend/
+!style-transfer-frontend/**
+!Dockerfile.backend
+!Dockerfile.frontend
+!nginx.conf
+!docker-compose.yml
+
+# Исключаем мусор даже в разрешённых папках
+.venv/
+__pycache__/
+*.pyc
+node_modules/
+.git/
+.gitignore
+README.md
+LICENSE.md
+.DS_Store
+Thumbs.db

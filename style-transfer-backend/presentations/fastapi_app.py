@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File, Form
+from fastapi import FastAPI, File, Form, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from services.st_service import StyleTransferService
@@ -8,7 +8,7 @@ style_transfer_service = StyleTransferService()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"], 
+    allow_origins=["http://localhost"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -34,5 +34,5 @@ async def process_image(
         model_type=model_type
     )
     
-    return JSONResponse(content=response, status_code=200)
+    return response
 

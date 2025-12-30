@@ -1,0 +1,34 @@
+# STAGE 1: Установка зависимостей
+FROM python:3.10-slim AS dependencies
+
+WORKDIR /app
+
+# Установка системных зависимостей
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libgomp1 \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY style-transfer-backend/requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+
+# STAGE 2: Финальный образ
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Установка тех же системных зависимостей в финальном образе!
+RUN apt-get update && apt-get install -y \
+    libgomp1 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Копируем Python-зависимости
+COPY --from=dependencies /usr/local /usr/local
+
+COPY style-transfer-backend .
+
+ENV PYTHONUNBUFFERED=1
+
+CMD ["uvicorn", "presentations.fastapi_app:app", "--host", "0.0.0.0", "--port", "8000"]
